@@ -126,7 +126,7 @@ cpdef triples_correction(int e_nocc, int e_nvir, int p_nocc, int p_nvir, double[
          temp += (1.0 * -eri_ep_ovVV[i,a,A,B] * t2_ep[j,b,I,B]  ) 
 
        term_holder_1 += temp**2
-       term_holder_2 += t1e[i,a] * -eri_ep_ovOV[j,b,I,A] * term_holder_2
+       term_holder_2 += t1e[i,a] * -eri_ep_ovOV[j,b,I,A] * temp
        term_holder_3 += t1p[I,A] * (eri_ee_ovov[i,a,j,b] ) * temp
 
        #abba
