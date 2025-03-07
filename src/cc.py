@@ -259,7 +259,94 @@ eri_ep_ovVV = eri_ep_full[:e_nocc, e_nocc:, p_nocc:, p_nocc:]
 eri_ep_ovOV = eri_ep_full[:e_nocc, e_nocc:, :p_nocc, p_nocc:]
 
 t2ee = np.asarray(t2ee)
-t2ep = np.asarray(t2ep)
+t2ep = np.asarray(t2ep)Last login: Fri Mar  7 07:50:29 on ttys000
+brorsenk@CAS-C02G80GUMD6P ~ % vi cc.py
+brorsenk@CAS-C02G80GUMD6P ~ % mv cc.py Desktop 
+brorsenk@CAS-C02G80GUMD6P ~ % cd Desktop 
+brorsenk@CAS-C02G80GUMD6P Desktop % vi cc.py 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+if restart == False:
+    t1e, t2ee, t1p, t2ep = rcc.c_amps(focke, eri, nocc, ntot, fockp, eri_ep, pocc, ptot)
+elif restart == True:
+    t1e = np.loadtxt('t1e')
+    t1e = np.array(t1e)
+    t1e = t1e.reshape(s_occ,nvir)
+    
+    t1p = np.loadtxt('t1p')
+    t1p = np.array(t1p)
+    t1p = t1p.reshape(p_nocc,pvir)
+ 
+    t2ee = np.array(np.loadtxt('t2ee'))
+    t2ee = t2ee.reshape(s_occ,s_occ,nvir,nvir)
+    
+    t2ep = np.array(np.loadtxt('t2ep'))
+    t2ep = t2ep.reshape(s_occ,p_nocc,nvir,pvir)
+
+mc_ecc_i = rcc.cc_ecc(focke,eri,nocc,nvir,t1e,t2ee,fockp,eri_ep,t2ep,t1p,pocc,pvir)
+
+print('Init MC-CCSD energy: {mc_ecc_i}')
+
+mc_ecc, t1e, t1p, t2ee, t2ep = rcc.run_ccsd(focke, energy,t1e,t1p,t2ee,t2ep,eri,eri_ep,fockp,nocc,nvir,pocc,pvir, conv=1e-9)
+
+e_nocc = nocc
+e_nvir = nvir
+
+eri_ee_ovvv = eri_ee_full[:e_nocc, e_nocc:, e_nocc:, e_nocc:]
+eri_ee_ooov = eri_ee_full[:e_nocc, :e_nocc, :e_nocc, e_nocc:]
+eri_ee_ovov = eri_ee_full[:e_nocc, e_nocc:, :e_nocc, e_nocc:]
+
+eri_ep_ooOV = eri_ep_full[:e_nocc, :e_nocc, :p_nocc, p_nocc:]
+eri_ep_vvOV = eri_ep_full[e_nocc:, e_nocc:, :p_nocc, p_nocc:]
+eri_ep_ovOO = eri_ep_full[:e_nocc, e_nocc:, :p_nocc, :p_nocc]
+eri_ep_ovVV = eri_ep_full[:e_nocc, e_nocc:, p_nocc:, p_nocc:]
+eri_ep_ovOV = eri_ep_full[:e_nocc, e_nocc:, :p_nocc, p_nocc:]
+
+t2ee = np.asarray(t2ee)  
+t2ep = np.asarray(t2ep)/2.0 #mc-ccsd code uses spin-adapted t2ep amps; (t) correction code assume un-sin-adapted t2ep amps
 t1e  = np.asarray(t1e)
 t1p  = np.asarray(t1p)
 
